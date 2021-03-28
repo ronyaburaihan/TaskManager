@@ -1,9 +1,10 @@
-package com.techdoctorbd.taskmanagermongodb.ui.auth
+package com.techdoctorbd.taskmanagermongodb.ui.auth.login
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.techdoctorbd.taskmanagermongodb.api.TaskManagerApi
+import com.techdoctorbd.taskmanagermongodb.models.AuthResponse
 import com.techdoctorbd.taskmanagermongodb.models.User
 import com.techdoctorbd.taskmanagermongodb.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,39 +13,36 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor(
+class LoginViewModel @Inject constructor(
     private val taskManagerApi: TaskManagerApi
 ) : ViewModel() {
 
-    var registerResponse: MutableLiveData<NetworkResult<User>> = MutableLiveData()
-    var userList: MutableLiveData<List<User>> = MutableLiveData()
+    var loginResponse: MutableLiveData<NetworkResult<AuthResponse>> = MutableLiveData()
 
-
-    fun registerUser(user: User) {
+    fun loginUser(user: User) {
         viewModelScope.launch {
-            registerResponse.value = NetworkResult.Loading()
             try {
-                val response = taskManagerApi.registerUser(user)
-                //registerResponse.value = handleRegisterResponse(response)
+                val response = taskManagerApi.loginUser(user)
+                loginResponse.value = handleRegisterResponse(response)
             } catch (e: Exception) {
-                registerResponse.value = NetworkResult.Error(e.message)
+                loginResponse.value = NetworkResult.Error(e.message)
             }
         }
     }
 
-    private fun handleRegisterResponse(response: Response<User>): NetworkResult<User> {
+    private fun handleRegisterResponse(response: Response<AuthResponse>): NetworkResult<AuthResponse> {
         when {
             response.message().toString().contains("timeout") -> {
                 return NetworkResult.Error("Request timeout")
             }
 
-            response.code() == 400 -> {
-                return NetworkResult.Error("User already exists")
+            response.code() == 404 -> {
+                return NetworkResult.Error("User not found")
             }
 
             response.isSuccessful -> {
-                val user = response.body()
-                return NetworkResult.Success(user!!)
+                val result = response.body()
+                return NetworkResult.Success(result!!)
             }
 
             else -> {

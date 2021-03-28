@@ -1,10 +1,9 @@
-package com.techdoctorbd.taskmanagermongodb.response
+package com.techdoctorbd.taskmanagermongodb.models
 
 
 import com.google.gson.annotations.SerializedName
-import com.techdoctorbd.taskmanagermongodb.models.User
 
-data class RegisterResponse(
+data class AuthResponse(
     @SerializedName("token")
     val token: String,
     @SerializedName("user")

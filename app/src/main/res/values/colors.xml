@@ -12,44 +12,5 @@
     <color name="colorBackground">#F3F3F3</color>
     <color name="textColorDark">#37474F</color>
     <color name="textColorLight">#757575</color>
-
-    <!--for other items-->
-    <color name="colorItem1Background">#EEFFF7</color>
-    <color name="colorItem1Tint">#53DD9D</color>
-
-    <color name="colorItem2Background">#F1F8FE</color>
-    <color name="colorItem2Tint">#47A8EC</color>
-
-    <color name="colorItem3Background">#FFF4E0</color>
-    <color name="colorItem3Tint">#FEB42F</color>
-
-    <color name="colorItem4Background">#FFF1EE</color>
-    <color name="colorItem4Tint">#F07A5A</color>
-
-    <color name="colorItemTint1">#3BD0AF</color>
-    <color name="colorItemBackground1">#263BD0AF</color>
-
-    <color name="colorItemTint2">#797EFF</color>
-    <color name="colorItemBackground2">#26797EFF</color>
-
-    <color name="colorItemTint3">#3DC4C4</color>
-    <color name="colorItemBackground3">#263DC4C4</color>
-
-    <color name="colorItemTint4">#AF6DED</color>
-    <color name="colorItemBackground4">#4DAF6DED</color>
-
-    <color name="colorItemTint5">#FFC744</color>
-    <color name="colorItemBackground5">#26FFC744</color>
-
-    <color name="colorItemTint6">#FF9167</color>
-    <color name="colorItemBackground6">#26FF9167</color>
-
-    <color name="colorItemTint7">#FE77A0</color>
-    <color name="colorItemBackground7">#26FE77A0</color>
-
-    <color name="colorItemTint8">#D67BF1</color>
-    <color name="colorItemBackground8">#26D67BF1</color>
-
-    <color name="colorItemTint9">#5CBFFF</color>
-    <color name="colorItemBackground9">#265CBFFF</color>
+    <color name="lightGrey">#EAEAEA</color>
 </resources>
