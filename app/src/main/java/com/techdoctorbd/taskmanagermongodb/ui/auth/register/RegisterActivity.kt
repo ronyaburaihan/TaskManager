@@ -1,7 +1,6 @@
 package com.techdoctorbd.taskmanagermongodb.ui.auth.register
 
 import android.app.Dialog
-import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -12,14 +11,18 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.techdoctorbd.taskmanagermongodb.R
+import com.techdoctorbd.taskmanagermongodb.data.UserPreferences
+import com.techdoctorbd.taskmanagermongodb.data.models.User
 import com.techdoctorbd.taskmanagermongodb.databinding.ActivityRegisterBinding
-import com.techdoctorbd.taskmanagermongodb.models.User
 import com.techdoctorbd.taskmanagermongodb.ui.MainActivity
 import com.techdoctorbd.taskmanagermongodb.ui.auth.login.LoginActivity
 import com.techdoctorbd.taskmanagermongodb.utils.Constants
+import com.techdoctorbd.taskmanagermongodb.utils.CustomProgressDialog
 import com.techdoctorbd.taskmanagermongodb.utils.checkConnection
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.util.*
 
 @AndroidEntryPoint
@@ -27,16 +30,17 @@ class RegisterActivity : AppCompatActivity() {
 
     private val registerViewModel: RegisterViewModel by viewModels()
     private lateinit var binding: ActivityRegisterBinding
-    private lateinit var progressDialog: ProgressDialog
+    private lateinit var progressDialog: CustomProgressDialog
+    private lateinit var userPreferences: UserPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         //init
-        progressDialog = ProgressDialog(this)
+        progressDialog = CustomProgressDialog(this)
+        userPreferences = UserPreferences(this)
 
         binding.tvLogin.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
@@ -89,13 +93,16 @@ class RegisterActivity : AppCompatActivity() {
                 tvOk.setOnClickListener { dialog.dismiss() }
                 dialog.show()
             } else {
-                progressDialog.setTitle("Please Wait")
-                progressDialog.setMessage("Checking your information")
-                progressDialog.setCanceledOnTouchOutside(false)
-                progressDialog.setCancelable(false)
-                progressDialog.show()
+                progressDialog.show("Please Wait")
 
-                registerViewModel.registerUser(User(name, email, password, age.toInt()))
+                registerViewModel.registerUser(
+                    User(
+                        name = name,
+                        email = email,
+                        password = password,
+                        age = age.toInt()
+                    )
+                )
             }
         }
 
@@ -104,6 +111,9 @@ class RegisterActivity : AppCompatActivity() {
             if (it.message.isNullOrEmpty()) {
                 if (it.data!!.token.isNotEmpty()) {
                     Constants.AUTH_TOKEN = it.data.token
+                    lifecycleScope.launch {
+                        userPreferences.saveAuthToken(Constants.AUTH_TOKEN)
+                    }
                     Toast.makeText(this, "Registration Success", Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this, MainActivity::class.java))
                     finish()

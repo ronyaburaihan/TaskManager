@@ -3,9 +3,9 @@ package com.techdoctorbd.taskmanagermongodb.ui.auth.login
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.techdoctorbd.taskmanagermongodb.api.TaskManagerApi
-import com.techdoctorbd.taskmanagermongodb.models.AuthResponse
-import com.techdoctorbd.taskmanagermongodb.models.User
+import com.techdoctorbd.taskmanagermongodb.data.api.TaskManagerApi
+import com.techdoctorbd.taskmanagermongodb.data.models.AuthResponse
+import com.techdoctorbd.taskmanagermongodb.data.models.User
 import com.techdoctorbd.taskmanagermongodb.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

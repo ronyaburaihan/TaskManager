@@ -1,4 +1,4 @@
-package com.techdoctorbd.taskmanagermongodb.models
+package com.techdoctorbd.taskmanagermongodb.data.models
 
 
 import com.google.gson.annotations.SerializedName

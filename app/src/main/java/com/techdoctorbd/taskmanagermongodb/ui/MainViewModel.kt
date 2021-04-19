@@ -1,10 +1,9 @@
-package com.techdoctorbd.taskmanagermongodb.ui.auth.register
+package com.techdoctorbd.taskmanagermongodb.ui
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.techdoctorbd.taskmanagermongodb.data.api.TaskManagerApi
-import com.techdoctorbd.taskmanagermongodb.data.models.AuthResponse
 import com.techdoctorbd.taskmanagermongodb.data.models.User
 import com.techdoctorbd.taskmanagermongodb.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,32 +12,31 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor(
+class MainViewModel @Inject constructor(
     private val taskManagerApi: TaskManagerApi
 ) : ViewModel() {
 
-    var registerResponse: MutableLiveData<NetworkResult<AuthResponse>> = MutableLiveData()
+    var profileResponse: MutableLiveData<NetworkResult<User>> = MutableLiveData()
 
-    fun registerUser(user: User) {
+    fun readProfile() {
         viewModelScope.launch {
-            //registerResponse.value = NetworkResult.Loading()
             try {
-                val response = taskManagerApi.registerUser(user)
-                registerResponse.value = handleRegisterResponse(response)
+                val response = taskManagerApi.readProfile()
+                profileResponse.value = handleRegisterResponse(response)
             } catch (e: Exception) {
-                registerResponse.value = NetworkResult.Error(e.message)
+                profileResponse.value = NetworkResult.Error(e.message)
             }
         }
     }
 
-    private fun handleRegisterResponse(response: Response<AuthResponse>): NetworkResult<AuthResponse> {
+    private fun handleRegisterResponse(response: Response<User>): NetworkResult<User> {
         when {
             response.message().toString().contains("timeout") -> {
                 return NetworkResult.Error("Request timeout")
             }
 
-            response.code() == 400 -> {
-                return NetworkResult.Error("User already exists")
+            response.code() == 404 -> {
+                return NetworkResult.Error("User not found")
             }
 
             response.isSuccessful -> {
