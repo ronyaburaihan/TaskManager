@@ -1,6 +1,7 @@
 package com.techdoctorbd.taskmanagermongodb.data.api
 
 import com.techdoctorbd.taskmanagermongodb.data.models.AuthResponse
+import com.techdoctorbd.taskmanagermongodb.data.models.Task
 import com.techdoctorbd.taskmanagermongodb.data.models.User
 import retrofit2.Response
 import retrofit2.http.Body
@@ -17,4 +18,10 @@ interface TaskManagerApi {
 
     @GET("users/me")
     suspend fun readProfile(): Response<User>
+
+    @POST("/tasks")
+    suspend fun addTask(@Body task: Task): Response<Task>
+
+    @GET("/tasks")
+    suspend fun getTasks(): List<Task>
 }
