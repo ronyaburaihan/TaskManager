@@ -1,9 +1,10 @@
 package com.techdoctorbd.taskmanagermongodb.data.models
 
-import java.sql.Timestamp
+import java.io.Serializable
 
 data class Task(
-    private val description: String,
-    private val completed: Boolean = false,
-    private val timestamp: Timestamp
-)
+    val _id: String? = null,
+    val description: String,
+    val completed: Boolean = false,
+    val taskTime: String
+) : Serializable

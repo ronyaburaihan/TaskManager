@@ -13,7 +13,6 @@ import com.techdoctorbd.taskmanagermongodb.data.models.Task
 import com.techdoctorbd.taskmanagermongodb.databinding.ActivityAddTaskBinding
 import com.techdoctorbd.taskmanagermongodb.utils.CustomProgressDialog
 import dagger.hilt.android.AndroidEntryPoint
-import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -26,6 +25,8 @@ class AddTaskActivity : AppCompatActivity() {
     private val calendar = Calendar.getInstance()
     private lateinit var progressDialog: CustomProgressDialog
     private val dateFormat = SimpleDateFormat("E, dd MMMM yyyy", Locale.getDefault())
+    private var isModify: Boolean? = false
+    private lateinit var task: Task
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,11 +37,19 @@ class AddTaskActivity : AppCompatActivity() {
         progressDialog = CustomProgressDialog(this)
 
 
+        if (intent.hasExtra("isModify")) {
+            isModify = intent.getBooleanExtra("isModify", false)
+            task = intent.getSerializableExtra("task") as Task
+            initModify()
+        }
+
+
         binding.dateText.text = dateFormat.format(calendar.time)
 
         binding.pickDate.setOnClickListener {
             chooseDate()
         }
+
 
         binding.saveBtn.setOnClickListener {
             val description = binding.editText.text.toString().trim()
@@ -53,7 +62,7 @@ class AddTaskActivity : AppCompatActivity() {
                 taskViewModel.addTask(
                     Task(
                         description = description,
-                        timestamp = Timestamp(calendar.timeInMillis)
+                        taskTime = calendar.timeInMillis.toString()
                     )
                 )
             }
@@ -74,6 +83,14 @@ class AddTaskActivity : AppCompatActivity() {
         })
     }
 
+    private fun initModify() {
+        binding.toolbarTitle.text = resources.getString(R.string.modify_task)
+        binding.saveBtn.text = resources.getString(R.string.update)
+        binding.deleteTask.visibility = View.VISIBLE
+
+        binding.editText.setText(task.description)
+    }
+
     private fun chooseDate() {
         val dialogView = View.inflate(this, R.layout.layout_date_picker, null)
         val datePicker = dialogView.findViewById<DatePicker>(R.id.date_picker)
@@ -87,8 +104,7 @@ class AddTaskActivity : AppCompatActivity() {
         builder.setTitle("Choose Date")
         builder.setNegativeButton("Cancel", null)
         builder.setPositiveButton("Set") { _, _ ->
-            val calendar =
-                GregorianCalendar(datePicker.year, datePicker.month, datePicker.dayOfMonth)
+            calendar.set(datePicker.year, datePicker.month, datePicker.dayOfMonth)
             binding.dateText.text = dateFormat.format(calendar.time)
         }
         builder.show()

@@ -24,7 +24,7 @@ class TaskViewModel @Inject constructor(
                 val response = taskManagerApi.addTask(task)
                 taskResponse.value = handleTaskResponse(response)
             } catch (e: Exception) {
-                taskResponse.value = NetworkResult.Error(e.message)
+                taskResponse.value = NetworkResult.Error(e.localizedMessage)
             }
         }
     }

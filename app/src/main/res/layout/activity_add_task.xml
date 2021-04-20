@@ -62,10 +62,10 @@
 
         <LinearLayout
             android:id="@+id/pick_date"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/deleteTask"
-            android:gravity="center"
+            android:gravity="start|center_vertical"
             android:orientation="horizontal"
             android:paddingHorizontal="30dp"
             android:paddingVertical="20dp"
@@ -89,10 +89,14 @@
 
         <LinearLayout
             android:id="@+id/deleteTask"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/save_btn"
-            android:gravity="center"
+            android:layout_alignParentEnd="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="start|center_vertical"
             android:orientation="horizontal"
             android:paddingHorizontal="30dp"
             android:paddingVertical="20dp"
@@ -100,10 +104,10 @@
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:src="@drawable/ic_baseline_delete_outline_24"
-                app:tint="@color/colorPrimary"
+                app:tint="@color/red"
                 tools:ignore="ContentDescription" />
 
             <TextView
@@ -111,7 +115,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:text="@string/delete_task"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/red"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 

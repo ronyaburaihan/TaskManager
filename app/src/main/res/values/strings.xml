@@ -35,5 +35,15 @@
     <string name="what_are_you_planning">What are you planning?</string>
     <string name="new_task">New Task</string>
     <string name="delete_task">Delete Task</string>
+    <string name="hey">Hey</string>
+    <string name="today_s_tasks">Today\'s Tasks</string>
+    <string name="tomorrow_s_tasks">Tomorrow\'s Tasks</string>
+    <string name="upcoming_tasks">Upcoming Tasks</string>
+    <string name="you_are_nfree_today">you are\nfree today</string>
+    <string name="you_have_no_task_to_do_today">You have no task to do today</string>
+    <string name="add_new_task">Add new task</string>
+    <string name="modify_task">Modify Task</string>
+    <string name="update">Update</string>
+    <string name="pending_tasks">Pending Tasks</string>
 
 </resources>
