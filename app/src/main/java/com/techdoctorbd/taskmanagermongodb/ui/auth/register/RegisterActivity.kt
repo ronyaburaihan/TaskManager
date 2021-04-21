@@ -50,7 +50,6 @@ class RegisterActivity : AppCompatActivity() {
         binding.btnRegister.setOnClickListener {
 
             val name = binding.edName.text.toString().trim()
-            val age = binding.edAge.text.toString().trim()
             val email = binding.edEmail.text.toString().trim()
             val password = binding.edPassword.text.toString().trim()
             val confirmPassword = binding.edConfirmPassword.text.toString().trim()
@@ -64,9 +63,6 @@ class RegisterActivity : AppCompatActivity() {
             } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 binding.edEmail.error = "Enter valid email address"
                 binding.edEmail.requestFocus()
-            } else if (age.isNotEmpty() && age.toInt() > 100) {
-                binding.edAge.error = "Enter valid age"
-                binding.edAge.requestFocus()
             } else if (TextUtils.isEmpty(password)) {
                 binding.edPassword.error = "This field can't be empty"
                 binding.edPassword.requestFocus()
@@ -99,8 +95,7 @@ class RegisterActivity : AppCompatActivity() {
                     User(
                         name = name,
                         email = email,
-                        password = password,
-                        age = age.toInt()
+                        password = password
                     )
                 )
             }

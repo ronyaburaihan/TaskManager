@@ -16,15 +16,39 @@ class TaskViewModel @Inject constructor(
     private val taskManagerApi: TaskManagerApi
 ) : ViewModel() {
 
-    var taskResponse: MutableLiveData<NetworkResult<Task>> = MutableLiveData()
+    var addTaskResponse: MutableLiveData<NetworkResult<Task>> = MutableLiveData()
+    var editTaskResponse: MutableLiveData<NetworkResult<Task>> = MutableLiveData()
+    var deleteTaskResponse: MutableLiveData<NetworkResult<Task>> = MutableLiveData()
 
     fun addTask(task: Task) {
         viewModelScope.launch {
             try {
                 val response = taskManagerApi.addTask(task)
-                taskResponse.value = handleTaskResponse(response)
+                addTaskResponse.value = handleTaskResponse(response)
             } catch (e: Exception) {
-                taskResponse.value = NetworkResult.Error(e.localizedMessage)
+                addTaskResponse.value = NetworkResult.Error(e.localizedMessage)
+            }
+        }
+    }
+
+    fun deleteTask(taskId: String) {
+        viewModelScope.launch {
+            try {
+                val response = taskManagerApi.deleteTask(taskId)
+                deleteTaskResponse.value = handleTaskResponse(response)
+            } catch (e: Exception) {
+                deleteTaskResponse.value = NetworkResult.Error(e.localizedMessage)
+            }
+        }
+    }
+
+    fun updateTask(task: Task) {
+        viewModelScope.launch {
+            try {
+                val response = taskManagerApi.updateTask(task)
+                editTaskResponse.value = handleTaskResponse(response)
+            } catch (e: Exception) {
+                editTaskResponse.value = NetworkResult.Error(e.localizedMessage)
             }
         }
     }

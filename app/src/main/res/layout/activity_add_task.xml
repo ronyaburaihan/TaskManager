@@ -10,32 +10,28 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="0dp">
+        app:liftOnScroll="true">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             android:background="@color/white"
-            app:contentInsetStart="0dp"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+            android:gravity="center_horizontal"
+            android:minHeight="?attr/actionBarSize"
+            android:textAlignment="center"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/toolbar_title"
+                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/toolbar_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/new_task"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:text="@string/add_new_task"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary" />
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -56,20 +52,29 @@
             android:hint="@string/what_are_you_planning"
             android:importantForAutofill="no"
             android:inputType="textMultiLine"
-            android:padding="20dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:textColorHint="#CDD1D5" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height=".5dp"
+            android:layout_below="@+id/edit_text"
+            android:background="@color/gray" />
 
         <LinearLayout
             android:id="@+id/pick_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/deleteTask"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
             android:gravity="start|center_vertical"
             android:orientation="horizontal"
             android:paddingHorizontal="30dp"
-            android:paddingVertical="20dp"
-            tools:ignore="UseCompoundDrawables">
+            android:paddingVertical="15dp"
+            tools:ignore="UnusedAttribute,UseCompoundDrawables">
 
             <ImageView
                 android:layout_width="18dp"
@@ -87,6 +92,12 @@
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height=".5dp"
+            android:layout_above="@+id/deleteTask"
+            android:background="@color/gray" />
+
         <LinearLayout
             android:id="@+id/deleteTask"
             android:layout_width="match_parent"
@@ -99,9 +110,9 @@
             android:gravity="start|center_vertical"
             android:orientation="horizontal"
             android:paddingHorizontal="30dp"
-            android:paddingVertical="20dp"
+            android:paddingVertical="15dp"
             android:visibility="gone"
-            tools:ignore="UseCompoundDrawables">
+            tools:ignore="UnusedAttribute,UseCompoundDrawables">
 
             <ImageView
                 android:layout_width="20dp"

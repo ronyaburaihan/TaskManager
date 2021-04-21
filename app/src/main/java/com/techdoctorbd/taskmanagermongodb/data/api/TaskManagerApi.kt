@@ -4,10 +4,7 @@ import com.techdoctorbd.taskmanagermongodb.data.models.AuthResponse
 import com.techdoctorbd.taskmanagermongodb.data.models.Task
 import com.techdoctorbd.taskmanagermongodb.data.models.User
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.QueryMap
+import retrofit2.http.*
 
 interface TaskManagerApi {
 
@@ -20,9 +17,15 @@ interface TaskManagerApi {
     @GET("users/me")
     suspend fun readProfile(): Response<User>
 
-    @POST("/tasks")
+    @POST("tasks")
     suspend fun addTask(@Body task: Task): Response<Task>
 
-    @GET("/tasks")
+    @GET("tasks")
     suspend fun getTasks(@QueryMap queries: Map<String, String>): Response<List<Task>>
+
+    @DELETE("tasks/{id}")
+    suspend fun deleteTask(@Path("id") taskId: String): Response<Task>
+
+    @PATCH("tasks/607fca6ab9bc6c33e89574eb")
+    suspend fun updateTask(@Body task: Task): Response<Task>
 }

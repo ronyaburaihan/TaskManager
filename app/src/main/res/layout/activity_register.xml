@@ -39,8 +39,7 @@
             android:layout_width="110dp"
             android:layout_height="110dp"
             android:layout_marginTop="5dp"
-            android:scaleType="centerInside"
-            android:src="@mipmap/ic_launcher_round"
+            android:src="@drawable/ic_document"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -70,20 +69,6 @@
             android:drawablePadding="16dp"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
-            android:padding="16dp"
-            android:textSize="16sp"
-            tools:ignore="Autofill" />
-
-        <EditText
-            android:id="@+id/ed_age"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/edit_text_background"
-            android:drawableStart="@drawable/ic_baseline_cake_24"
-            android:drawablePadding="16dp"
-            android:hint="@string/your_age"
-            android:inputType="number"
             android:padding="16dp"
             android:textSize="16sp"
             tools:ignore="Autofill" />

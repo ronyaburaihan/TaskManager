@@ -18,6 +18,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/white"
             app:contentInsetStart="0dp"
+            app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
             <TextView
@@ -61,7 +62,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:text="@string/pending_tasks"
-                    android:textColor="#111111"
+                    android:textColor="@color/textColorDark"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
@@ -88,7 +89,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:text="@string/today_s_tasks"
-                    android:textColor="#111111"
+                    android:textColor="@color/textColorDark"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
@@ -115,15 +116,15 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:text="@string/tomorrow_s_tasks"
-                    android:textColor="#111111"
-                    android:textSize="27sp"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="24sp"
                     android:textStyle="bold" />
 
                 <com.techdoctorbd.taskmanagermongodb.utils.NoScrollListView
                     android:id="@+id/taskListTomorrow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:divider="#30CCCCCC"
+                    android:divider="@color/textColorLight"
                     android:dividerHeight="1dp" />
 
             </LinearLayout>
@@ -142,8 +143,8 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:text="@string/upcoming_tasks"
-                    android:textColor="#111111"
-                    android:textSize="27sp"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="24sp"
                     android:textStyle="bold" />
 
                 <com.techdoctorbd.taskmanagermongodb.utils.NoScrollListView
@@ -181,7 +182,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/you_are_nfree_today"
+            android:text="@string/you_are_free_today"
             android:textColor="#323872"
             android:textSize="34sp"
             android:textStyle="bold" />
@@ -217,6 +218,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="15dp"
         android:src="@drawable/ic_baseline_add_24"
+        android:textColor="@color/white"
         app:backgroundTint="@color/colorPrimary"
         app:tint="@color/white"
         tools:ignore="ContentDescription" />

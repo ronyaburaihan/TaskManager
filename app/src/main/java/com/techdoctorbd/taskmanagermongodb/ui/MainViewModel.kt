@@ -51,11 +51,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val response = taskManagerApi.getTasks(queryMap)
-
-                taskListResponse.value = handleTaskResponse(response)
-
-                if (!taskListResponse.value!!.data.isNullOrEmpty())
-                    filterList(taskListResponse.value!!.data!!)
+                handleTaskResponse(response)
 
             } catch (e: Exception) {
                 taskListResponse.value = NetworkResult.Error(e.message)
@@ -63,23 +59,23 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun handleTaskResponse(response: Response<List<Task>>): NetworkResult<List<Task>> {
+    private fun handleTaskResponse(response: Response<List<Task>>) {
         when {
             response.message().toString().contains("timeout") -> {
-                return NetworkResult.Error("Request timeout")
+                taskListResponse.value = NetworkResult.Error("Request timeout")
             }
 
             response.code() == 404 -> {
-                return NetworkResult.Error("User not found")
+                taskListResponse.value = NetworkResult.Error("User not found")
             }
 
             response.isSuccessful -> {
                 val result = response.body()
-                return NetworkResult.Success(result!!)
+                filterList(result!!)
             }
 
             else -> {
-                return NetworkResult.Error(response.message())
+                taskListResponse.value = NetworkResult.Error(response.message())
             }
         }
     }
@@ -134,20 +130,28 @@ class MainViewModel @Inject constructor(
             }
         }
 
-        if (!pendingList.isNullOrEmpty()) {
-            pendingTaskList.value = pendingList
+        if (!pendingList.isNullOrEmpty() ||
+            !todayList.isNullOrEmpty() ||
+            !tomorrowList.isNullOrEmpty() ||
+            !upcomingList.isNullOrEmpty()
+        ) {
+            //to show task container
+            taskListResponse.value = NetworkResult.Success(
+                listOf(
+                    Task(
+                        description = "This is task",
+                        taskTime = "This is timestamp"
+                    )
+                )
+            )
+        } else {
+            //no task available
+            taskListResponse.value = NetworkResult.Success(listOf())
         }
 
-        if (!todayList.isNullOrEmpty()) {
-            todayTaskList.value = todayList
-        }
-
-        if (!tomorrowList.isNullOrEmpty()) {
-            tomorrowsTaskList.value = tomorrowList
-        }
-
-        if (!upcomingList.isNullOrEmpty()) {
-            upcomingTaskList.value = upcomingList
-        }
+        pendingTaskList.value = pendingList
+        todayTaskList.value = todayList
+        tomorrowsTaskList.value = tomorrowList
+        upcomingTaskList.value = upcomingList
     }
 }

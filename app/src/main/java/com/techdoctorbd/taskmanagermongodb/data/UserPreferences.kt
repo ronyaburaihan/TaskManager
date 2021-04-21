@@ -25,6 +25,12 @@ class UserPreferences(context: Context) {
         }
     }
 
+    suspend fun deleteToken() {
+        dataStore.edit {
+            it.clear()
+        }
+    }
+
     companion object {
         private val KEY_AUTH = stringPreferencesKey("key_auth")
     }

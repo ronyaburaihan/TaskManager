@@ -4,6 +4,5 @@ data class User(
     val _id: String? = null,
     val name: String? = null,
     val email: String,
-    val password: String,
-    val age: Int = 0,
+    val password: String
 )

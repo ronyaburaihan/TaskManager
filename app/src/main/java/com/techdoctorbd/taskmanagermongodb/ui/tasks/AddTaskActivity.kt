@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.techdoctorbd.taskmanagermongodb.R
 import com.techdoctorbd.taskmanagermongodb.data.models.Task
 import com.techdoctorbd.taskmanagermongodb.databinding.ActivityAddTaskBinding
@@ -33,7 +34,12 @@ class AddTaskActivity : AppCompatActivity() {
         binding = ActivityAddTaskBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //init
+        //setup toolbar
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.title = ""
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_ios_24)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         progressDialog = CustomProgressDialog(this)
 
 
@@ -56,25 +62,82 @@ class AddTaskActivity : AppCompatActivity() {
             if (TextUtils.isEmpty(description)) {
                 Toast.makeText(this, "Task description can't be empty", Toast.LENGTH_SHORT).show()
             } else {
-                progressDialog.show("Please wait, Adding new task for you")
+                if (binding.saveBtn.text == resources.getString(R.string.save)) {
+                    progressDialog.show("Adding new task")
 
-                //adding new task
-                taskViewModel.addTask(
-                    Task(
-                        description = description,
-                        taskTime = calendar.timeInMillis.toString()
+                    //adding new task
+                    taskViewModel.addTask(
+                        Task(
+                            description = description,
+                            taskTime = calendar.timeInMillis.toString()
+                        )
                     )
-                )
+                } else {
+                    progressDialog.show("Updating task")
+
+                    //updating task
+                    taskViewModel.updateTask(
+                        Task(
+                            description = description,
+                            taskTime = calendar.timeInMillis.toString()
+                        )
+                    )
+                }
             }
         }
 
-        taskViewModel.taskResponse.observe(this, {
+        binding.deleteTask.setOnClickListener {
+
+            MaterialAlertDialogBuilder(this).setTitle(resources.getString(R.string.delete_task))
+                .setMessage(resources.getString(R.string.are_you_sure_to_delete))
+                .setNegativeButton(resources.getString(R.string.cancel)) { dialog, which ->
+                    // Respond to negative button press
+                    dialog.dismiss()
+                }
+                .setPositiveButton(resources.getString(R.string.delete)) { dialog, which ->
+                    // Respond to positive button press
+                    dialog.dismiss()
+                    progressDialog.show("Deleting task")
+                    taskViewModel.deleteTask(task._id!!)
+                }
+                .show()
+        }
+
+        taskViewModel.addTaskResponse.observe(this, {
             //hide progress dialog
             progressDialog.dismiss()
 
             if (it.message.isNullOrEmpty()) {
                 //task added successfully
                 Toast.makeText(this, "Task added successfully", Toast.LENGTH_SHORT).show()
+                finish()
+            } else {
+                //failed to add new task
+                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        taskViewModel.editTaskResponse.observe(this, {
+            //hide progress dialog
+            progressDialog.dismiss()
+
+            if (it.message.isNullOrEmpty()) {
+                //task added successfully
+                Toast.makeText(this, "Task updated successfully", Toast.LENGTH_SHORT).show()
+                finish()
+            } else {
+                //failed to add new task
+                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        taskViewModel.deleteTaskResponse.observe(this, {
+            //hide progress dialog
+            progressDialog.dismiss()
+
+            if (it.message.isNullOrEmpty()) {
+                //task added successfully
+                Toast.makeText(this, "Task deleted successfully", Toast.LENGTH_SHORT).show()
                 finish()
             } else {
                 //failed to add new task
@@ -89,11 +152,14 @@ class AddTaskActivity : AppCompatActivity() {
         binding.deleteTask.visibility = View.VISIBLE
 
         binding.editText.setText(task.description)
+        calendar.timeInMillis = task.taskTime.toLong()
+        binding.dateText.text = dateFormat.format(calendar.time)
     }
 
     private fun chooseDate() {
         val dialogView = View.inflate(this, R.layout.layout_date_picker, null)
         val datePicker = dialogView.findViewById<DatePicker>(R.id.date_picker)
+        datePicker.minDate = System.currentTimeMillis()
         datePicker.updateDate(
             calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(
                 Calendar.DAY_OF_MONTH
@@ -108,5 +174,10 @@ class AddTaskActivity : AppCompatActivity() {
             binding.dateText.text = dateFormat.format(calendar.time)
         }
         builder.show()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 }
