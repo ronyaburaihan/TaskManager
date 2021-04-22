@@ -13,8 +13,13 @@ import androidx.core.text.HtmlCompat
 import com.techdoctorbd.taskmanagermongodb.R
 import com.techdoctorbd.taskmanagermongodb.data.models.Task
 import com.techdoctorbd.taskmanagermongodb.ui.tasks.AddTaskActivity
+import com.techdoctorbd.taskmanagermongodb.utils.TaskItemClickListener
 
-class TaskListAdapter(private val taskList: List<Task>, private val activity: Activity) :
+class TaskListAdapter(
+    private val taskList: List<Task>,
+    private val activity: Activity,
+    private val taskItemClickListener: TaskItemClickListener
+) :
     BaseAdapter() {
 
     override fun getCount(): Int {
@@ -65,6 +70,10 @@ class TaskListAdapter(private val taskList: List<Task>, private val activity: Ac
             } else {
                 holder.taskName?.text = task.description
             }
+        }
+
+        holder.checkBox?.setOnClickListener {
+            taskItemClickListener.onClick(taskList[position], !taskList[position].completed)
         }
 
         holder.taskItem?.setOnClickListener {

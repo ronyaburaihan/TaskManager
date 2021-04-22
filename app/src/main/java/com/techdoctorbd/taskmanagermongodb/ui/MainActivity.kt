@@ -2,6 +2,7 @@ package com.techdoctorbd.taskmanagermongodb.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -14,16 +15,21 @@ import com.techdoctorbd.taskmanagermongodb.data.models.Task
 import com.techdoctorbd.taskmanagermongodb.databinding.ActivityMainBinding
 import com.techdoctorbd.taskmanagermongodb.ui.auth.login.LoginActivity
 import com.techdoctorbd.taskmanagermongodb.ui.tasks.AddTaskActivity
+import com.techdoctorbd.taskmanagermongodb.ui.tasks.TaskViewModel
+import com.techdoctorbd.taskmanagermongodb.utils.CustomProgressDialog
 import com.techdoctorbd.taskmanagermongodb.utils.NoScrollListView
+import com.techdoctorbd.taskmanagermongodb.utils.TaskItemClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), TaskItemClickListener {
 
     private lateinit var binding: ActivityMainBinding
     private val mainViewModel: MainViewModel by viewModels()
+    private val taskViewModel: TaskViewModel by viewModels()
     private lateinit var userPreferences: UserPreferences
+    private lateinit var progressDialog: CustomProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +38,7 @@ class MainActivity : AppCompatActivity() {
 
         //init
         userPreferences = UserPreferences(this)
+        progressDialog = CustomProgressDialog(this)
 
         binding.fabAddTask.setOnClickListener {
             startActivity(Intent(this, AddTaskActivity::class.java))
@@ -62,9 +69,16 @@ class MainActivity : AppCompatActivity() {
                 if (!it.data.isNullOrEmpty()) {
                     binding.layoutWelcome.visibility = View.GONE
                     binding.scrollView.visibility = View.VISIBLE
+
+                    binding.shimmerLayout.stopShimmer()
+                    binding.shimmerLayout.visibility = View.GONE
+
                 } else {
                     binding.layoutWelcome.visibility = View.VISIBLE
                     binding.scrollView.visibility = View.GONE
+
+                    binding.shimmerLayout.stopShimmer()
+                    binding.shimmerLayout.visibility = View.GONE
                 }
             }
         })
@@ -96,6 +110,12 @@ class MainActivity : AppCompatActivity() {
             else
                 setDataToList(binding.upcomingContainer, binding.taskListUpcoming, it)
         })
+
+        taskViewModel.editTaskResponse.observe(this, {
+            progressDialog.dismiss()
+            if (!it.message.isNullOrEmpty())
+                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+        })
     }
 
     private fun setDataToList(
@@ -103,8 +123,9 @@ class MainActivity : AppCompatActivity() {
         listView: NoScrollListView,
         taskList: List<Task>
     ) {
+        Log.d("TaskID", taskList[0]._id!!)
         layout.visibility = View.VISIBLE
-        val taskListAdapter = TaskListAdapter(taskList, this)
+        val taskListAdapter = TaskListAdapter(taskList, this, this)
         listView.adapter = taskListAdapter
     }
 
@@ -115,6 +136,12 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         mainViewModel.getTasks(HashMap())
+    }
+
+    override fun onClick(task: Task, isCompleted: Boolean) {
+        task.completed = isCompleted
+        progressDialog.show("Please wait")
+        taskViewModel.updateTask(task._id!!, task)
     }
 
 }

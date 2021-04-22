@@ -76,12 +76,9 @@ class AddTaskActivity : AppCompatActivity() {
                     progressDialog.show("Updating task")
 
                     //updating task
-                    taskViewModel.updateTask(
-                        Task(
-                            description = description,
-                            taskTime = calendar.timeInMillis.toString()
-                        )
-                    )
+                    task.description = description
+                    task.taskTime = calendar.timeInMillis.toString()
+                    taskViewModel.updateTask(task._id!!, task)
                 }
             }
         }

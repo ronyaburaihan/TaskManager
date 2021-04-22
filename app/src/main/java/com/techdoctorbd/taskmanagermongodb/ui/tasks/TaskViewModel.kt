@@ -42,10 +42,11 @@ class TaskViewModel @Inject constructor(
         }
     }
 
-    fun updateTask(task: Task) {
+    fun updateTask(taskId: String, task: Task) {
         viewModelScope.launch {
             try {
-                val response = taskManagerApi.updateTask(task)
+                task._id = null
+                val response = taskManagerApi.updateTask(taskId, task)
                 editTaskResponse.value = handleTaskResponse(response)
             } catch (e: Exception) {
                 editTaskResponse.value = NetworkResult.Error(e.localizedMessage)

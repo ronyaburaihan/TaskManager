@@ -3,8 +3,8 @@ package com.techdoctorbd.taskmanagermongodb.data.models
 import java.io.Serializable
 
 data class Task(
-    val _id: String? = null,
-    val description: String,
-    val completed: Boolean = false,
-    val taskTime: String
+    var _id: String? = null,
+    var description: String,
+    var completed: Boolean = false,
+    var taskTime: String
 ) : Serializable

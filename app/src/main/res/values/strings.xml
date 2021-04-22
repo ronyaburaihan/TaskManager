@@ -49,5 +49,6 @@
     <string name="are_you_sure_to_delete">Are you sure to delete this task?</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
+    <string name="welcome">Welcome</string>
 
 </resources>

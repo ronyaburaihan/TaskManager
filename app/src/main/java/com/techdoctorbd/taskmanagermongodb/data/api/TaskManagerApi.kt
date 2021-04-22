@@ -26,6 +26,6 @@ interface TaskManagerApi {
     @DELETE("tasks/{id}")
     suspend fun deleteTask(@Path("id") taskId: String): Response<Task>
 
-    @PATCH("tasks/607fca6ab9bc6c33e89574eb")
-    suspend fun updateTask(@Body task: Task): Response<Task>
+    @PATCH("tasks/{id}")
+    suspend fun updateTask(@Path("id") taskId: String, @Body task: Task): Response<Task>
 }
