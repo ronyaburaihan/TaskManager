@@ -16,7 +16,7 @@ import com.techdoctorbd.taskmanagermongodb.R
 import com.techdoctorbd.taskmanagermongodb.data.UserPreferences
 import com.techdoctorbd.taskmanagermongodb.data.models.User
 import com.techdoctorbd.taskmanagermongodb.databinding.ActivityRegisterBinding
-import com.techdoctorbd.taskmanagermongodb.ui.MainActivity
+import com.techdoctorbd.taskmanagermongodb.ui.main.MainActivity
 import com.techdoctorbd.taskmanagermongodb.ui.auth.login.LoginActivity
 import com.techdoctorbd.taskmanagermongodb.utils.Constants
 import com.techdoctorbd.taskmanagermongodb.utils.CustomProgressDialog

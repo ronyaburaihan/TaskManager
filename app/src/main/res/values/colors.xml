@@ -15,4 +15,5 @@
     <color name="textColorLight">#757575</color>
     <color name="lightGrey">#EAEAEA</color>
     <color name="placeHolderColor">#D8D6D6</color>
+    <color name="dividerColor">#30CCCCCC</color>
 </resources>

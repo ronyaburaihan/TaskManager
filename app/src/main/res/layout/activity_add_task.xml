@@ -6,36 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".ui.tasks.AddTaskActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:liftOnScroll="true">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:gravity="center_horizontal"
-            android:minHeight="?attr/actionBarSize"
-            android:textAlignment="center"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight">
-
-            <TextView
-                android:id="@+id/toolbar_title"
-                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center_horizontal"
-                android:text="@string/add_new_task"
-                android:textAlignment="center"
-                android:textColor="@color/colorPrimary" />
-
-        </androidx.appcompat.widget.Toolbar>
-
-    </com.google.android.material.appbar.AppBarLayout>
+    <include
+        android:id="@+id/toolbar_layout"
+        layout="@layout/layout_toolbar" />
 
     <RelativeLayout
         android:layout_width="match_parent"

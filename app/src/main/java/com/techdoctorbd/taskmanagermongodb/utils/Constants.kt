@@ -5,4 +5,7 @@ object Constants {
     //const val BASE_URL = "http://192.168.1.101:3000/"
 
     var AUTH_TOKEN = ""
+
+    //API Query Keys
+    const val QUERY_COMPLETED = "completed"
 }

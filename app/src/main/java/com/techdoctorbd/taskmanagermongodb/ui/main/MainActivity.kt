@@ -1,4 +1,4 @@
-package com.techdoctorbd.taskmanagermongodb.ui
+package com.techdoctorbd.taskmanagermongodb.ui.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -17,6 +17,7 @@ import com.techdoctorbd.taskmanagermongodb.adapters.TaskListAdapter
 import com.techdoctorbd.taskmanagermongodb.data.UserPreferences
 import com.techdoctorbd.taskmanagermongodb.data.models.Task
 import com.techdoctorbd.taskmanagermongodb.databinding.ActivityMainBinding
+import com.techdoctorbd.taskmanagermongodb.ui.activities.CompletedTasksActivity
 import com.techdoctorbd.taskmanagermongodb.ui.auth.login.LoginActivity
 import com.techdoctorbd.taskmanagermongodb.ui.tasks.AddTaskActivity
 import com.techdoctorbd.taskmanagermongodb.ui.tasks.TaskViewModel
@@ -60,6 +61,11 @@ class MainActivity : AppCompatActivity(), TaskItemClickListener {
             closeDrawer()
         }
 
+        binding.sidebarLayout.tvCompletedTasks.setOnClickListener {
+            closeDrawer()
+            startActivity(Intent(this, CompletedTasksActivity::class.java))
+        }
+
         binding.sidebarLayout.tvLogout.setOnClickListener {
             logOut()
         }
@@ -84,15 +90,15 @@ class MainActivity : AppCompatActivity(), TaskItemClickListener {
                     binding.content.layoutWelcome.visibility = View.GONE
                     binding.content.scrollView.visibility = View.VISIBLE
 
-                    binding.content.shimmerLayout.stopShimmer()
-                    binding.content.shimmerLayout.visibility = View.GONE
+                    binding.content.shimmer.shimmerLayout.stopShimmer()
+                    binding.content.shimmer.shimmerLayout.visibility = View.GONE
 
                 } else {
                     binding.content.layoutWelcome.visibility = View.VISIBLE
                     binding.content.scrollView.visibility = View.GONE
 
-                    binding.content.shimmerLayout.stopShimmer()
-                    binding.content.shimmerLayout.visibility = View.GONE
+                    binding.content.shimmer.shimmerLayout.stopShimmer()
+                    binding.content.shimmer.shimmerLayout.visibility = View.GONE
                 }
             }
         })

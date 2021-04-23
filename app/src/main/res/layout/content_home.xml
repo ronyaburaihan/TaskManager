@@ -60,7 +60,7 @@
                     android:id="@+id/taskListPending"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:divider="#30CCCCCC"
+                    android:divider="@color/dividerColor"
                     android:dividerHeight="1dp" />
 
             </LinearLayout>
@@ -88,7 +88,7 @@
                     android:id="@+id/taskListToday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:divider="#30CCCCCC"
+                    android:divider="@color/dividerColor"
                     android:dividerHeight="1dp" />
 
             </LinearLayout>
@@ -116,7 +116,7 @@
                     android:id="@+id/taskListTomorrow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:divider="@color/textColorLight"
+                    android:divider="@color/dividerColor"
                     android:dividerHeight="1dp" />
 
             </LinearLayout>
@@ -144,7 +144,7 @@
                     android:id="@+id/taskListUpcoming"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:divider="#30CCCCCC"
+                    android:divider="@color/dividerColor"
                     android:dividerHeight="1dp" />
 
             </LinearLayout>
@@ -204,50 +204,9 @@
 
     </LinearLayout>
 
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmer_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <include layout="@layout/placeholder_layout" />
-
-            <include layout="@layout/placeholder_layout" />
-
-            <include layout="@layout/placeholder_layout" />
-
-            <include layout="@layout/placeholder_layout" />
-
-            <include layout="@layout/placeholder_layout" />
-
-            <include layout="@layout/placeholder_layout" />
-
-            <include layout="@layout/placeholder_layout" />
-
-            <include layout="@layout/placeholder_layout" />
-
-            <include layout="@layout/placeholder_layout" />
-
-            <include layout="@layout/placeholder_layout" />
-
-            <include layout="@layout/placeholder_layout" />
-
-            <include layout="@layout/placeholder_layout" />
-
-            <include layout="@layout/placeholder_layout" />
-
-            <include layout="@layout/placeholder_layout" />
-
-            <include layout="@layout/placeholder_layout" />
-
-        </LinearLayout>
-
-    </com.facebook.shimmer.ShimmerFrameLayout>
+    <include
+        android:id="@+id/shimmer"
+        layout="@layout/placeholder_layout" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_task"

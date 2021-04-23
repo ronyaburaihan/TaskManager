@@ -1,4 +1,4 @@
-package com.techdoctorbd.taskmanagermongodb.ui
+package com.techdoctorbd.taskmanagermongodb.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.asLiveData
 import com.techdoctorbd.taskmanagermongodb.data.UserPreferences
 import com.techdoctorbd.taskmanagermongodb.ui.auth.login.LoginActivity
+import com.techdoctorbd.taskmanagermongodb.ui.main.MainActivity
 import com.techdoctorbd.taskmanagermongodb.utils.Constants.AUTH_TOKEN
 
 class SplashActivity : AppCompatActivity() {

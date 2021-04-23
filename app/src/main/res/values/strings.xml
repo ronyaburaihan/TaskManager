@@ -53,5 +53,6 @@
     <string name="profile">Profile</string>
     <string name="completed_tasks">Completed Tasks</string>
     <string name="logout">Logout</string>
+    <string name="no_completed_task_found">No completed task found</string>
 
 </resources>

@@ -35,8 +35,9 @@ class AddTaskActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //setup toolbar
-        setSupportActionBar(binding.toolbar)
+        setSupportActionBar(binding.toolbarLayout.toolbar)
         supportActionBar?.title = ""
+        binding.toolbarLayout.toolbarTitle.text = resources.getString(R.string.add_new_task)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_ios_24)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -144,7 +145,7 @@ class AddTaskActivity : AppCompatActivity() {
     }
 
     private fun initModify() {
-        binding.toolbarTitle.text = resources.getString(R.string.modify_task)
+        binding.toolbarLayout.toolbarTitle.text = resources.getString(R.string.modify_task)
         binding.saveBtn.text = resources.getString(R.string.update)
         binding.deleteTask.visibility = View.VISIBLE
 

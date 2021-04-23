@@ -19,6 +19,7 @@ class TaskViewModel @Inject constructor(
     var addTaskResponse: MutableLiveData<NetworkResult<Task>> = MutableLiveData()
     var editTaskResponse: MutableLiveData<NetworkResult<Task>> = MutableLiveData()
     var deleteTaskResponse: MutableLiveData<NetworkResult<Task>> = MutableLiveData()
+    var completedTaskList: MutableLiveData<NetworkResult<List<Task>>> = MutableLiveData()
 
     fun addTask(task: Task) {
         viewModelScope.launch {
@@ -38,6 +39,17 @@ class TaskViewModel @Inject constructor(
                 deleteTaskResponse.value = handleTaskResponse(response)
             } catch (e: Exception) {
                 deleteTaskResponse.value = NetworkResult.Error(e.localizedMessage)
+            }
+        }
+    }
+
+    fun getCompletedTask(query: HashMap<String, String>) {
+        viewModelScope.launch {
+            try {
+                val response = taskManagerApi.getTasks(query)
+                completedTaskList.value = handleTaskListResponse(response)
+            } catch (exception: Exception) {
+                completedTaskList.value = NetworkResult.Error(exception.localizedMessage)
             }
         }
     }
@@ -78,4 +90,26 @@ class TaskViewModel @Inject constructor(
             }
         }
     }
+
+    private fun handleTaskListResponse(response: Response<List<Task>>): NetworkResult<List<Task>> {
+
+        return when {
+            response.message().toString().contains("timeout") -> {
+                NetworkResult.Error("Request timeout")
+            }
+
+            response.code() == 404 -> {
+                NetworkResult.Error("User not found")
+            }
+
+            response.isSuccessful -> {
+                NetworkResult.Success(response.body()!!)
+            }
+
+            else -> {
+                return NetworkResult.Error(response.message())
+            }
+        }
+    }
+
 }
