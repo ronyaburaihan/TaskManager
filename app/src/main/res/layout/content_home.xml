@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/white"
+            app:contentInsetStart="0dp"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:title="@string/app_name" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:isScrollContainer="false"
+        android:visibility="gone"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/pendingContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/montserrat_semi_bold"
+                    android:text="@string/pending_tasks"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <com.techdoctorbd.taskmanagermongodb.utils.NoScrollListView
+                    android:id="@+id/taskListPending"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="#30CCCCCC"
+                    android:dividerHeight="1dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/todayContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/montserrat_semi_bold"
+                    android:text="@string/today_s_tasks"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <com.techdoctorbd.taskmanagermongodb.utils.NoScrollListView
+                    android:id="@+id/taskListToday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="#30CCCCCC"
+                    android:dividerHeight="1dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tomorrowContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/montserrat_semi_bold"
+                    android:text="@string/tomorrow_s_tasks"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <com.techdoctorbd.taskmanagermongodb.utils.NoScrollListView
+                    android:id="@+id/taskListTomorrow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@color/textColorLight"
+                    android:dividerHeight="1dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/upcomingContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/montserrat_semi_bold"
+                    android:text="@string/upcoming_tasks"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <com.techdoctorbd.taskmanagermongodb.utils.NoScrollListView
+                    android:id="@+id/taskListUpcoming"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="#30CCCCCC"
+                    android:dividerHeight="1dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/layout_welcome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="30dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_welcome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/hey"
+            android:textColor="#EC5D5D"
+            android:textSize="38sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/you_are_free_today"
+            android:textColor="#323872"
+            android:textSize="34sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/you_have_no_task_to_do_today"
+            android:textColor="#CDD1D5"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_add_new_task"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/radius_border_button"
+            android:paddingHorizontal="60dp"
+            android:paddingVertical="12dp"
+            android:text="@string/add_new_task"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary" />
+
+    </LinearLayout>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/placeholder_layout" />
+
+            <include layout="@layout/placeholder_layout" />
+
+            <include layout="@layout/placeholder_layout" />
+
+            <include layout="@layout/placeholder_layout" />
+
+            <include layout="@layout/placeholder_layout" />
+
+            <include layout="@layout/placeholder_layout" />
+
+            <include layout="@layout/placeholder_layout" />
+
+            <include layout="@layout/placeholder_layout" />
+
+            <include layout="@layout/placeholder_layout" />
+
+            <include layout="@layout/placeholder_layout" />
+
+            <include layout="@layout/placeholder_layout" />
+
+            <include layout="@layout/placeholder_layout" />
+
+            <include layout="@layout/placeholder_layout" />
+
+            <include layout="@layout/placeholder_layout" />
+
+            <include layout="@layout/placeholder_layout" />
+
+        </LinearLayout>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="15dp"
+        android:src="@drawable/ic_baseline_add_24"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/colorPrimary"
+        app:tint="@color/white"
+        tools:ignore="ContentDescription" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

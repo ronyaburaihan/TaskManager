@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/ivCloseDrawer"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:padding="4dp"
+        android:src="@drawable/ic_baseline_close_24"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/civProfile"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_profile"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/txtDisplayName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center_horizontal"
+        android:text="@string/app_name"
+        android:textColor="@color/textColorDark"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tvProfile"
+        style="@style/SidebarLabel.SidebarOption"
+        android:gravity="center_vertical"
+        android:text="@string/profile"
+        app:drawableStartCompat="@drawable/ic_baseline_person_24" />
+
+    <TextView
+        android:id="@+id/tvCompletedTasks"
+        style="@style/SidebarLabel.SidebarOption"
+        android:gravity="center_vertical"
+        android:text="@string/completed_tasks"
+        app:drawableStartCompat="@drawable/ic_baseline_check_circle_outline_24" />
+
+    <TextView
+        android:id="@+id/tvLogout"
+        style="@style/SidebarLabel.SidebarOption"
+        android:gravity="center_vertical"
+        android:text="@string/logout"
+        app:drawableStartCompat="@drawable/ic_baseline_login_24" />
+
+</LinearLayout>

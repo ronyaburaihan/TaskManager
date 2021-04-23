@@ -7,8 +7,12 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.GravityCompat
 import androidx.lifecycle.lifecycleScope
+import com.techdoctorbd.taskmanagermongodb.R
 import com.techdoctorbd.taskmanagermongodb.adapters.TaskListAdapter
 import com.techdoctorbd.taskmanagermongodb.data.UserPreferences
 import com.techdoctorbd.taskmanagermongodb.data.models.Task
@@ -19,6 +23,7 @@ import com.techdoctorbd.taskmanagermongodb.ui.tasks.TaskViewModel
 import com.techdoctorbd.taskmanagermongodb.utils.CustomProgressDialog
 import com.techdoctorbd.taskmanagermongodb.utils.NoScrollListView
 import com.techdoctorbd.taskmanagermongodb.utils.TaskItemClickListener
+import com.techdoctorbd.taskmanagermongodb.utils.runDelayed
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -40,26 +45,35 @@ class MainActivity : AppCompatActivity(), TaskItemClickListener {
         userPreferences = UserPreferences(this)
         progressDialog = CustomProgressDialog(this)
 
-        binding.fabAddTask.setOnClickListener {
+        setSupportActionBar(binding.content.toolbar)
+        setUpDrawerToggle()
+
+        binding.content.fabAddTask.setOnClickListener {
             startActivity(Intent(this, AddTaskActivity::class.java))
         }
 
-        binding.tvAddNewTask.setOnClickListener {
+        binding.content.tvAddNewTask.setOnClickListener {
             startActivity(Intent(this, AddTaskActivity::class.java))
+        }
+
+        binding.sidebarLayout.ivCloseDrawer.setOnClickListener {
+            closeDrawer()
+        }
+
+        binding.sidebarLayout.tvLogout.setOnClickListener {
+            logOut()
         }
 
         mainViewModel.profileResponse.observe(this, {
             if (it.message.isNullOrEmpty()) {
-                binding.toolbarTitle.text = "Welcome ${it.data?.name}!"
+                binding.sidebarLayout.txtDisplayName.text = it.data?.name
             } else {
                 //to show error message
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
 
                 //if Unauthorized logout user
                 if (it.message == "Unauthorized") {
-                    lifecycleScope.launch { userPreferences.deleteToken() }
-                    startActivity(Intent(this, LoginActivity::class.java))
-                    finish()
+                    logOut()
                 }
             }
         })
@@ -67,48 +81,56 @@ class MainActivity : AppCompatActivity(), TaskItemClickListener {
         mainViewModel.taskListResponse.observe(this, {
             if (it.message.isNullOrEmpty()) {
                 if (!it.data.isNullOrEmpty()) {
-                    binding.layoutWelcome.visibility = View.GONE
-                    binding.scrollView.visibility = View.VISIBLE
+                    binding.content.layoutWelcome.visibility = View.GONE
+                    binding.content.scrollView.visibility = View.VISIBLE
 
-                    binding.shimmerLayout.stopShimmer()
-                    binding.shimmerLayout.visibility = View.GONE
+                    binding.content.shimmerLayout.stopShimmer()
+                    binding.content.shimmerLayout.visibility = View.GONE
 
                 } else {
-                    binding.layoutWelcome.visibility = View.VISIBLE
-                    binding.scrollView.visibility = View.GONE
+                    binding.content.layoutWelcome.visibility = View.VISIBLE
+                    binding.content.scrollView.visibility = View.GONE
 
-                    binding.shimmerLayout.stopShimmer()
-                    binding.shimmerLayout.visibility = View.GONE
+                    binding.content.shimmerLayout.stopShimmer()
+                    binding.content.shimmerLayout.visibility = View.GONE
                 }
             }
         })
 
         mainViewModel.pendingTaskList.observe(this, {
             if (it.isNullOrEmpty())
-                hideList(binding.pendingContainer)
+                hideList(binding.content.pendingContainer)
             else
-                setDataToList(binding.pendingContainer, binding.taskListPending, it)
+                setDataToList(binding.content.pendingContainer, binding.content.taskListPending, it)
         })
 
         mainViewModel.todayTaskList.observe(this, {
             if (it.isNullOrEmpty())
-                hideList(binding.todayContainer)
+                hideList(binding.content.todayContainer)
             else
-                setDataToList(binding.todayContainer, binding.taskListToday, it)
+                setDataToList(binding.content.todayContainer, binding.content.taskListToday, it)
         })
 
         mainViewModel.tomorrowsTaskList.observe(this, {
             if (it.isNullOrEmpty())
-                hideList(binding.tomorrowContainer)
+                hideList(binding.content.tomorrowContainer)
             else
-                setDataToList(binding.tomorrowContainer, binding.taskListTomorrow, it)
+                setDataToList(
+                    binding.content.tomorrowContainer,
+                    binding.content.taskListTomorrow,
+                    it
+                )
         })
 
         mainViewModel.upcomingTaskList.observe(this, {
             if (it.isNullOrEmpty())
-                hideList(binding.upcomingContainer)
+                hideList(binding.content.upcomingContainer)
             else
-                setDataToList(binding.upcomingContainer, binding.taskListUpcoming, it)
+                setDataToList(
+                    binding.content.upcomingContainer,
+                    binding.content.taskListUpcoming,
+                    it
+                )
         })
 
         taskViewModel.editTaskResponse.observe(this, {
@@ -116,6 +138,12 @@ class MainActivity : AppCompatActivity(), TaskItemClickListener {
             if (!it.message.isNullOrEmpty())
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
         })
+    }
+
+    private fun logOut() {
+        lifecycleScope.launch { userPreferences.deleteToken() }
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
     }
 
     private fun setDataToList(
@@ -144,4 +172,55 @@ class MainActivity : AppCompatActivity(), TaskItemClickListener {
         taskViewModel.updateTask(task._id!!, task)
     }
 
+    private fun setUpDrawerToggle() {
+        val toggle = object : ActionBarDrawerToggle(
+            this,
+            binding.drawerLayout,
+            binding.content.toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        ) {
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+                super.onDrawerSlide(drawerView, slideOffset)
+                binding.main.translationX = slideOffset * drawerView.width
+                (binding.drawerLayout).bringChildToFront(drawerView)
+                (binding.drawerLayout).requestLayout()
+            }
+        }
+        toggle.setToolbarNavigationClickListener {
+            if (binding.drawerLayout.isDrawerVisible(GravityCompat.START)) {
+                binding.drawerLayout.closeDrawer(GravityCompat.START)
+            } else {
+                binding.drawerLayout.openDrawer(GravityCompat.START)
+            }
+        }
+        toggle.isDrawerIndicatorEnabled = false
+        toggle.setHomeAsUpIndicator(
+            ResourcesCompat.getDrawable(
+                resources,
+                R.drawable.ic_drawer,
+                theme
+            )
+        )
+        binding.drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+    }
+
+    private fun closeDrawer() {
+        if (binding.drawerLayout.isDrawerOpen(binding.leftDrawer)) runDelayed(50) {
+            binding.drawerLayout.closeDrawer(
+                binding.leftDrawer
+            )
+        }
+    }
+
+    override fun onBackPressed() {
+        if (binding.drawerLayout.isDrawerOpen(binding.leftDrawer)) runDelayed(50) {
+            binding.drawerLayout.closeDrawer(
+                binding.leftDrawer
+            )
+        } else
+            super.onBackPressed()
+
+    }
 }

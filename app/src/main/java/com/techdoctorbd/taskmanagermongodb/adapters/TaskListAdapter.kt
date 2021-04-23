@@ -36,7 +36,7 @@ class TaskListAdapter(
     }
 
     override fun getView(position: Int, view: View?, parent: ViewGroup?): View {
-        var holder: ListTaskViewHolder? = null
+        val holder: ListTaskViewHolder?
         var convertView = view
         if (convertView == null) {
             holder = ListTaskViewHolder()

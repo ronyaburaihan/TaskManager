@@ -50,5 +50,8 @@
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
     <string name="welcome">Welcome</string>
+    <string name="profile">Profile</string>
+    <string name="completed_tasks">Completed Tasks</string>
+    <string name="logout">Logout</string>
 
 </resources>
