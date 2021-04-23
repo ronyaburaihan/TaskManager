@@ -2,6 +2,7 @@ package com.techdoctorbd.taskmanagermongodb.adapters
 
 import android.app.Activity
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -73,6 +74,7 @@ class TaskListAdapter(
         }
 
         holder.checkBox?.setOnClickListener {
+            Log.d("TaskItem", taskList[position].toString())
             taskItemClickListener.onClick(taskList[position], !taskList[position].completed)
         }
 
