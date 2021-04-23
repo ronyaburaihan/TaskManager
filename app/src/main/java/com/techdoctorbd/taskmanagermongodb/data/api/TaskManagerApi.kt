@@ -14,6 +14,9 @@ interface TaskManagerApi {
     @POST("users/login")
     suspend fun loginUser(@Body user: User): Response<AuthResponse>
 
+    @POST("users/logout")
+    suspend fun logoutUser(): Response<AuthResponse>
+
     @GET("users/me")
     suspend fun readProfile(): Response<User>
 

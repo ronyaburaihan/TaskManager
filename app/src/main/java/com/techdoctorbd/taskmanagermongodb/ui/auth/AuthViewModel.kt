@@ -1,4 +1,4 @@
-package com.techdoctorbd.taskmanagermongodb.ui.auth.register
+package com.techdoctorbd.taskmanagermongodb.ui.auth
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,11 +13,12 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor(
+class AuthViewModel @Inject constructor(
     private val taskManagerApi: TaskManagerApi
 ) : ViewModel() {
 
     var registerResponse: MutableLiveData<NetworkResult<AuthResponse>> = MutableLiveData()
+    var loginResponse: MutableLiveData<NetworkResult<AuthResponse>> = MutableLiveData()
 
     fun registerUser(user: User) {
         viewModelScope.launch {
@@ -31,6 +32,17 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
+    fun loginUser(user: User) {
+        viewModelScope.launch {
+            try {
+                val response = taskManagerApi.loginUser(user)
+                loginResponse.value = handleRegisterResponse(response)
+            } catch (e: Exception) {
+                loginResponse.value = NetworkResult.Error(e.message)
+            }
+        }
+    }
+
     private fun handleRegisterResponse(response: Response<AuthResponse>): NetworkResult<AuthResponse> {
         when {
             response.message().toString().contains("timeout") -> {
@@ -39,6 +51,10 @@ class RegisterViewModel @Inject constructor(
 
             response.code() == 400 -> {
                 return NetworkResult.Error("User already exists")
+            }
+
+            response.code() == 404 -> {
+                return NetworkResult.Error("User not found")
             }
 
             response.isSuccessful -> {

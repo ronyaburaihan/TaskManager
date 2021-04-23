@@ -8,6 +8,7 @@ import com.techdoctorbd.taskmanagermongodb.data.api.TaskManagerApi
 import com.techdoctorbd.taskmanagermongodb.data.models.Task
 import com.techdoctorbd.taskmanagermongodb.data.models.User
 import com.techdoctorbd.taskmanagermongodb.utils.NetworkResult
+import com.techdoctorbd.taskmanagermongodb.utils.handleNetworkResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -27,6 +28,7 @@ class MainViewModel @Inject constructor(
     var todayTaskList: MutableLiveData<List<Task>> = MutableLiveData()
     var tomorrowsTaskList: MutableLiveData<List<Task>> = MutableLiveData()
     var upcomingTaskList: MutableLiveData<List<Task>> = MutableLiveData()
+    var logoutResponse: MutableLiveData<NetworkResult<String>> = MutableLiveData()
     private val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
     private val todayDate: String = dateFormat.format(calendar.time)
     private var tomorrowDate: String
@@ -40,7 +42,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val response = taskManagerApi.readProfile()
-                profileResponse.value = handleRegisterResponse(response)
+                profileResponse.value = handleNetworkResponse(response)
             } catch (e: Exception) {
                 profileResponse.value = NetworkResult.Error(e.message)
             }
@@ -56,6 +58,21 @@ class MainViewModel @Inject constructor(
             } catch (e: Exception) {
                 taskListResponse.value = NetworkResult.Error(e.message)
             }
+        }
+    }
+
+    fun logoutUser() {
+        try {
+            viewModelScope.launch {
+                val response = taskManagerApi.logoutUser()
+                if (response.isSuccessful) {
+                    logoutResponse.value = NetworkResult.Success("Logged out")
+                } else {
+                    logoutResponse.value = NetworkResult.Error(response.message())
+                }
+            }
+        } catch (e: Exception) {
+            taskListResponse.value = NetworkResult.Error(e.message)
         }
     }
 
@@ -76,28 +93,6 @@ class MainViewModel @Inject constructor(
 
             else -> {
                 taskListResponse.value = NetworkResult.Error(response.message())
-            }
-        }
-    }
-
-
-    private fun handleRegisterResponse(response: Response<User>): NetworkResult<User> {
-        when {
-            response.message().toString().contains("timeout") -> {
-                return NetworkResult.Error("Request timeout")
-            }
-
-            response.code() == 404 -> {
-                return NetworkResult.Error("User not found")
-            }
-
-            response.isSuccessful -> {
-                val result = response.body()
-                return NetworkResult.Success(result!!)
-            }
-
-            else -> {
-                return NetworkResult.Error(response.message())
             }
         }
     }

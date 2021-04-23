@@ -42,6 +42,7 @@
         style="@style/SidebarLabel.SidebarOption"
         android:gravity="center_vertical"
         android:text="@string/profile"
+        android:visibility="gone"
         app:drawableStartCompat="@drawable/ic_baseline_person_24" />
 
     <TextView

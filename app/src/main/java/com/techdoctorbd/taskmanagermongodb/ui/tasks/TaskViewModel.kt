@@ -6,9 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.techdoctorbd.taskmanagermongodb.data.api.TaskManagerApi
 import com.techdoctorbd.taskmanagermongodb.data.models.Task
 import com.techdoctorbd.taskmanagermongodb.utils.NetworkResult
+import com.techdoctorbd.taskmanagermongodb.utils.handleNetworkResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,7 +25,7 @@ class TaskViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val response = taskManagerApi.addTask(task)
-                addTaskResponse.value = handleTaskResponse(response)
+                addTaskResponse.value = handleNetworkResponse(response)
             } catch (e: Exception) {
                 addTaskResponse.value = NetworkResult.Error(e.localizedMessage)
             }
@@ -36,7 +36,7 @@ class TaskViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val response = taskManagerApi.deleteTask(taskId)
-                deleteTaskResponse.value = handleTaskResponse(response)
+                deleteTaskResponse.value = handleNetworkResponse(response)
             } catch (e: Exception) {
                 deleteTaskResponse.value = NetworkResult.Error(e.localizedMessage)
             }
@@ -47,7 +47,7 @@ class TaskViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val response = taskManagerApi.getTasks(query)
-                completedTaskList.value = handleTaskListResponse(response)
+                completedTaskList.value = handleNetworkResponse(response)
             } catch (exception: Exception) {
                 completedTaskList.value = NetworkResult.Error(exception.localizedMessage)
             }
@@ -63,51 +63,9 @@ class TaskViewModel @Inject constructor(
                     taskTime = taskItem.taskTime
                 )
                 val response = taskManagerApi.updateTask(taskId, task)
-                editTaskResponse.value = handleTaskResponse(response)
+                editTaskResponse.value = handleNetworkResponse(response)
             } catch (e: Exception) {
                 editTaskResponse.value = NetworkResult.Error(e.localizedMessage)
-            }
-        }
-    }
-
-    private fun handleTaskResponse(response: Response<Task>): NetworkResult<Task> {
-        when {
-            response.message().toString().contains("timeout") -> {
-                return NetworkResult.Error("Request timeout")
-            }
-
-            response.code() == 404 -> {
-                return NetworkResult.Error("Task not found")
-            }
-
-            response.isSuccessful -> {
-                val result = response.body()
-                return NetworkResult.Success(result!!)
-            }
-
-            else -> {
-                return NetworkResult.Error(response.message())
-            }
-        }
-    }
-
-    private fun handleTaskListResponse(response: Response<List<Task>>): NetworkResult<List<Task>> {
-
-        return when {
-            response.message().toString().contains("timeout") -> {
-                NetworkResult.Error("Request timeout")
-            }
-
-            response.code() == 404 -> {
-                NetworkResult.Error("User not found")
-            }
-
-            response.isSuccessful -> {
-                NetworkResult.Success(response.body()!!)
-            }
-
-            else -> {
-                return NetworkResult.Error(response.message())
             }
         }
     }

@@ -18,8 +18,8 @@
         tools:targetApi="m">
         <activity android:name=".ui.activities.CompletedTasksActivity"></activity>
         <activity android:name=".ui.tasks.AddTaskActivity" />
-        <activity android:name=".ui.auth.login.LoginActivity" />
-        <activity android:name=".ui.auth.register.RegisterActivity" />
+        <activity android:name=".ui.auth.LoginActivity" />
+        <activity android:name=".ui.auth.RegisterActivity" />
         <activity android:name=".ui.main.MainActivity" />
         <activity
             android:name=".ui.activities.SplashActivity"

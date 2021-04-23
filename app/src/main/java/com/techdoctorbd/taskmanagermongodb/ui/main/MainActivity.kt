@@ -18,7 +18,7 @@ import com.techdoctorbd.taskmanagermongodb.data.UserPreferences
 import com.techdoctorbd.taskmanagermongodb.data.models.Task
 import com.techdoctorbd.taskmanagermongodb.databinding.ActivityMainBinding
 import com.techdoctorbd.taskmanagermongodb.ui.activities.CompletedTasksActivity
-import com.techdoctorbd.taskmanagermongodb.ui.auth.login.LoginActivity
+import com.techdoctorbd.taskmanagermongodb.ui.auth.LoginActivity
 import com.techdoctorbd.taskmanagermongodb.ui.tasks.AddTaskActivity
 import com.techdoctorbd.taskmanagermongodb.ui.tasks.TaskViewModel
 import com.techdoctorbd.taskmanagermongodb.utils.CustomProgressDialog
@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity(), TaskItemClickListener {
         }
 
         binding.sidebarLayout.tvLogout.setOnClickListener {
+            // mainViewModel.logoutUser()
             logOut()
         }
 
@@ -100,6 +101,9 @@ class MainActivity : AppCompatActivity(), TaskItemClickListener {
                     binding.content.shimmer.shimmerLayout.stopShimmer()
                     binding.content.shimmer.shimmerLayout.visibility = View.GONE
                 }
+            } else {
+                binding.content.shimmer.shimmerLayout.stopShimmer()
+                binding.content.shimmer.shimmerLayout.visibility = View.GONE
             }
         })
 
@@ -142,6 +146,13 @@ class MainActivity : AppCompatActivity(), TaskItemClickListener {
         taskViewModel.editTaskResponse.observe(this, {
             progressDialog.dismiss()
             if (!it.message.isNullOrEmpty())
+                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+        })
+
+        mainViewModel.logoutResponse.observe(this, {
+            if (!it.message.isNullOrEmpty())
+                logOut()
+            else
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
         })
     }
